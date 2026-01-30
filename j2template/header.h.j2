@@ -1,0 +1,111 @@
+/**
+ *
+ * @file        {{name_lower}}xx.h
+ *
+ * @brief       CMSIS {{name_upper}}xx Device Peripheral Access Layer Header File.
+ *
+ * @version     V1.0.0
+ *
+ * @date        {{date}}
+ *
+ * @attention
+ *
+ * Licensed under the Apache License, Version 2.0 (the License); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * The original code has been modified by Geehy Semiconductor.
+ *
+ * Copyright (c) 2017 STMicroelectronics.
+ * Copyright (C) {{year}} Geehy Semiconductor.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ */
+
+/** @addtogroup CMSIS
+  * @{
+  */
+
+/** @addtogroup {{name_lower}}xx
+  * @{
+  */
+
+#ifndef __{{name_upper}}xx_H
+#define __{{name_upper}}xx_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif /* __cplusplus */
+
+/** @addtogroup Configuration_section_for_CMSIS
+  * @{
+  */
+/**
+ * @brief Configuration of the {{cpu.name_full_name}} Processor and Core Peripherals
+ */
+#define {{core_rev_define}}       0 /*!< Core Revision {{cpu.revision}}                       */
+{% if cpu.mpuPresent %}
+#define __MPU_PRESENT             1 /*!< {{name_upper}} provide MPU                             */
+{% else %}
+#define __MPU_PRESENT             0 /*!< {{name_upper}} do not provide MPU                      */
+{% endif %}
+#define __NVIC_PRIO_BITS          {{cpu.nvicPrioBits}} /*!< {{name_upper}} uses {{cpu.nvicPrioBits}} Bits for the Priority Levels     */
+{% if cpu.vendorSysTickConfig %}
+#define __Vendor_SysTickConfig    1 /*!< Set to 1 if different SysTick Config is used      */
+{% else %}
+#define __Vendor_SysTickConfig    0 /*!< Set to 1 if different SysTick Config is used      */
+{% endif %}
+{% if cpu.vtorPresent %}
+#define __VTOR_PRESENT            1 /*!< Set to 1 if different Vector Table Offset is used */
+{% else %}
+#define __VTOR_PRESENT            0 /*!< Set to 1 if different Vector Table Offset is used */
+{% endif %}
+/**
+  * @}
+  */
+
+/** @addtogroup Peripheral_interrupt_number_definition
+  * @{
+  */
+
+/**
+ * @brief {{name_upper}}xx Interrupt Number Definition, according to the selected device
+ *        in @ref Library_configuration_section
+ */
+
+/**
+ * @brief {{name_upper}}xx Interrupt Number Definition, according to the selected device
+ *        in @ref Library_configuration_section
+ */
+typedef enum
+{
+{% if cpu.name == 'CM0' %}
+{% include 'cortex_m0.j2' %}
+{% elif cpu.name == 'CM0+' %}
+{% include 'cortex_m0.j2' %}
+{% elif cpu.name == 'CM3' %}
+{% include 'cortex_m3.j2' %}
+{% elif cpu.name == 'CM4' %}
+{% include 'cortex_m4.j2' %}
+{% endif %}
+/******  {{name_upper}}xx specific Interrupt Numbers *************************************************************/
+{% for interrupt in interrupts %}
+  {{interrupt.name}}_IRQn                   =   {{interrupt.value}},    /*!< {{interrupt.value}}  {{interrupt.desciption}}                             */
+{% endfor %}
+} IRQn_Type;
+
+/**
+  * @}
+  */
