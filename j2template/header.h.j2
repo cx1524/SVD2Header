@@ -1,39 +1,4 @@
-/**
- *
- * @file        {{name_lower}}xx.h
- *
- * @brief       CMSIS {{name_upper}}xx Device Peripheral Access Layer Header File.
- *
- * @version     V1.0.0
- *
- * @date        {{date}}
- *
- * @attention
- *
- * Licensed under the Apache License, Version 2.0 (the License); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an AS IS BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * The original code has been modified by Geehy Semiconductor.
- *
- * Copyright (c) 2017 STMicroelectronics.
- * Copyright (C) {{year}} Geehy Semiconductor.
- * All rights reserved.
- *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- */
-
+{% include 'license.j2' %}
 /** @addtogroup CMSIS
   * @{
   */
@@ -52,26 +17,7 @@
 /** @addtogroup Configuration_section_for_CMSIS
   * @{
   */
-/**
- * @brief Configuration of the {{cpu.name_full_name}} Processor and Core Peripherals
- */
-#define {{core_rev_define}}       0 /*!< Core Revision {{cpu.revision}}                       */
-{% if cpu.mpuPresent %}
-#define __MPU_PRESENT             1 /*!< {{name_upper}} provide MPU                             */
-{% else %}
-#define __MPU_PRESENT             0 /*!< {{name_upper}} do not provide MPU                      */
-{% endif %}
-#define __NVIC_PRIO_BITS          {{cpu.nvicPrioBits}} /*!< {{name_upper}} uses {{cpu.nvicPrioBits}} Bits for the Priority Levels     */
-{% if cpu.vendorSysTickConfig %}
-#define __Vendor_SysTickConfig    1 /*!< Set to 1 if different SysTick Config is used      */
-{% else %}
-#define __Vendor_SysTickConfig    0 /*!< Set to 1 if different SysTick Config is used      */
-{% endif %}
-{% if cpu.vtorPresent %}
-#define __VTOR_PRESENT            1 /*!< Set to 1 if different Vector Table Offset is used */
-{% else %}
-#define __VTOR_PRESENT            0 /*!< Set to 1 if different Vector Table Offset is used */
-{% endif %}
+{% include 'cpu.j2' %}
 /**
   * @}
   */
@@ -89,23 +35,101 @@
  * @brief {{name_upper}}xx Interrupt Number Definition, according to the selected device
  *        in @ref Library_configuration_section
  */
-typedef enum
-{
-{% if cpu.name == 'CM0' %}
-{% include 'cortex_m0.j2' %}
-{% elif cpu.name == 'CM0+' %}
-{% include 'cortex_m0.j2' %}
-{% elif cpu.name == 'CM3' %}
-{% include 'cortex_m3.j2' %}
-{% elif cpu.name == 'CM4' %}
-{% include 'cortex_m4.j2' %}
-{% endif %}
-/******  {{name_upper}}xx specific Interrupt Numbers *************************************************************/
-{% for interrupt in interrupts %}
-  {{interrupt.name}}_IRQn                   =   {{interrupt.value}},    /*!< {{interrupt.value}}  {{interrupt.desciption}}                             */
+{% include 'interrupt.j2' %}
+/**
+  * @}
+  */
+
+{% include 'include_file.j2' %}
+
+/** @addtogroup Peripheral_registers_structures
+  * @{
+  */
+{% for peripheral in peripherals %}
+{% include 'struct.j2' %}
 {% endfor %}
-} IRQn_Type;
 
 /**
   * @}
   */
+
+/** @addtogroup Peripheral_memory_map
+  * @{
+  */
+
+{% include 'memory_map.j2' %}
+
+/**
+  * @}
+  */
+
+/** @addtogroup Peripheral_declaration
+  * @{
+  */
+
+{% include 'peripheral_declaration.j2' %}
+
+/**
+  * @}
+  */
+
+/** @addtogroup Exported_constants
+  * @{
+  */
+
+/** @addtogroup Hardware_Constant_Definition
+  * @{
+  */
+
+/** @addtogroup Peripheral_Registers_Bits_Definition
+  * @{
+  */
+
+/******************************************************************************/
+/*                         Peripheral Registers_Bits_Definition               */
+/******************************************************************************/
+{% for peripheral in peripherals %}
+{% include 'reg_bit.j2' %}
+{% endfor %}
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/** @addtogroup Exported_macro
+  * @{
+  */
+
+{% include 'instance_def.j2' %}
+
+/******************************************************************************/
+/*  For a painless codes migration between the {{"%-29s"|format("%sxx device product"|name_upper)}} */
+/*  lines, the aliases defined below are put in place to overcome the         */
+/*  differences in the interrupt handlers and IRQn definitions.               */
+/*  No need to update developed interrupt code when moving across             */
+/*  product lines within the same {{"%-43s"|format("%sxx Family"|name_upper)}} */
+/******************************************************************************/
+
+/**
+  * @}
+  */
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* __{{name_upper}}xx_H */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/************************ (C) COPYRIGHT Geehy Semiconductor *****END OF FILE****/
