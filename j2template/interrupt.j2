@@ -1,0 +1,16 @@
+typedef enum
+{
+{% if cpu.name == 'CM0' %}
+{% include 'cortex_m0.j2' %}
+{% elif cpu.name == 'CM0+' %}
+{% include 'cortex_m0.j2' %}
+{% elif cpu.name == 'CM3' %}
+{% include 'cortex_m3.j2' %}
+{% elif cpu.name == 'CM4' %}
+{% include 'cortex_m4.j2' %}
+{% endif %}
+/******  {{name_upper}}xx specific Interrupt Numbers ***************************************************************/
+{% for interrupt in interrupts %}
+  {{"%-28s"|format("%s_IRQn"|format(interrupt.name))}}=  {{"%-7s"|format("%d,"|format(interrupt.value))}}/*!< {{"%-63s"|format("%s %s"|format(interrupt.value, interrupt.desciption))}} */
+{% endfor %}
+} IRQn_Type;
