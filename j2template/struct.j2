@@ -2,7 +2,8 @@
   * @brief {{peripheral.description}} ({{peripheral.name}})
   */
 
-typedef struct {                                /*!< {{"%-73s"|format("(@%s) %s %s Structure"|format(peripheral.baseAddress, peripheral.description, peripheral.description))}} */
+typedef struct
+{
 {% set ns = namespace(register_address=0, reserved_index=0) %}
 {% for register in peripheral.registers %}
   {% if register.addressOffset != ns.register_address %}
@@ -12,4 +13,4 @@ typedef struct {                                /*!< {{"%-73s"|format("(@%s) %s 
   __IO uint32_t  {{"%-30s"|format("%s;"|format(register.name))}} /*!< {{"%-73s"|format("(@%s) %s"|format("0x%08X"|format(register.addressOffset), register.description))}} */
   {% set ns.register_address = register.addressOffset + 4 %}
 {% endfor %}
-} {{peripheral.name}}_TypeDef;
+} {{peripheral.Typedef}};
