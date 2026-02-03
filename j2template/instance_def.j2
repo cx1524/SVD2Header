@@ -1,0 +1,7 @@
+/******************************* {{instances.groupName}} Instances ******************************/
+{% if instances.instances | length == 1 %}
+#define IS_{{instances.groupName}}_ALL_INSTANCE(INSTANCE) (((INSTANCE) == {{instances.instances[0].name}}))
+{% else %}
+#define IS_{{instances.groupName}}_ALL_INSTANCE(INSTANCE) ({% for instance in instances.instances %}{% if not loop.first %} || \
+                                        {% endif %}((INSTANCE) == {{instance.name}}){% endfor %})
+{% endif %}

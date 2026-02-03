@@ -1,0 +1,3 @@
+{% for peripheral in peripherals %}
+#define {{"%-23s"|format(peripheral.name)}} ({{"%-28s %s_BASE"|format("(%s*)"|format(peripheral.typedef), peripheral.name)}})
+{% endfor %}

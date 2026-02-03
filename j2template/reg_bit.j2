@@ -1,0 +1,22 @@
+/******************************************************************************/
+/*                                                                            */
+/*                        {{"%-51s"|format(peripheral.description)}} */
+/*                                                                            */
+/******************************************************************************/
+{% for register in peripheral.registers %}
+/********************  Bit definition for {{"%-51s"|format(register.name)|replace(" ", "*")}} register ***************/
+{% for field in register.fields %}
+#define {{"%-32s"|format("%s_%s_%s_Pos"|format(peripheral.name, register.name, field.name))}}({{field.bitOffset}})
+#define {{"%-32s"|format("%s_%s_%s_Msk"|format(peripheral.name, register.name, field.name))}}({{"0x%X"|format(field.bitWidth)}} << {{peripheral.name}}_{{register.name}}_{{field.name}}_Pos)
+#define {{"%-32s"|format("%s_%s_%s"|format(peripheral.name, register.name, field.name))}}{{peripheral.name}}_{{register.name}}_{{field.name}}_Msk
+{% if field.bitWidth > 1 %}
+{% set ns = namespace(count=1, index=0) %}
+{% set bitWidth = field.bitWidth.bit_length() %}
+{% for i in range(bitWidth) %}
+#define {{"%-32s"|format("%s_%s_%s_%d"|format(peripheral.name, register.name, field.name, ns.index))}}({{"0x%X"|format(ns.count)}} << {{peripheral.name}}_{{register.name}}_{{field.name}}_Pos)
+{% set ns.index = ns.index + 1 %}
+{% set ns.count = ns.count * 2 %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
