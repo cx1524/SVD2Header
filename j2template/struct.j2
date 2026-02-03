@@ -1,0 +1,15 @@
+/**
+  * @brief {{peripheral.description}} ({{peripheral.name}})
+  */
+
+typedef struct {                                /*!< {{"%-73s"|format("(@%s) %s %s Structure"|format(peripheral.baseAddress, peripheral.description, peripheral.description))}} */
+{% set ns = namespace(register_address=0, reserved_index=0) %}
+{% for register in peripheral.registers %}
+  {% if register.addressOffset != ns.register_address %}
+       uint32_t  RESERVED{{ ns.reserved_index }}[{{ (register.addressOffset - ns.register_address) // 4 }}];
+       {% set ns.reserved_index = ns.reserved_index + 1 %}
+  {% endif %}
+  __IO uint32_t  {{"%-30s"|format("%s;"|format(register.name))}} /*!< {{"%-73s"|format("(@%s) %s"|format("0x%08X"|format(register.addressOffset), register.description))}} */
+  {% set ns.register_address = register.addressOffset + 4 %}
+{% endfor %}
+} {{peripheral.name}}_TypeDef;
