@@ -1,7 +1,10 @@
 [project]
 name = "svd2header"
 version = "0.1.0"
-description = "Add your description here"
+description = "A tool to convert SVD files to C header files"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "jinja2>=3.1.6",
+    "pyinstaller>=6.18.0",
+]
