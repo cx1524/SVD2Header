@@ -9,5 +9,13 @@ wheels/
 # Virtual environments
 .venv
 
-# SVD database
-*.svd
+# VSCode workspace files
+.vscode/
+
+# test files
+test/
+
+# release files
+release/
+build/
+*.zip
