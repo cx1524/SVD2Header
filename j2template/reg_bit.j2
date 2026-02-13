@@ -1,22 +1,32 @@
 /******************************************************************************/
 /*                                                                            */
-/*                        {{"%-51s"|format(peripheral.description)}} */
+/*                     {{"%-54s"|format(peripheral.find("description").text)}} */
 /*                                                                            */
 /******************************************************************************/
-{% for register in peripheral.registers %}
-/********************  Bit definition for {{"%-51s"|format(register.name)|replace(" ", "*")}} register ***************/
-{% for field in register.fields %}
-#define {{"%-32s"|format("%s_%s_%s_Pos"|format(peripheral.name, register.name, field.name))}}({{field.bitOffset}})
-#define {{"%-32s"|format("%s_%s_%s_Msk"|format(peripheral.name, register.name, field.name))}}({{"0x%X"|format(field.bitWidth)}} << {{peripheral.name}}_{{register.name}}_{{field.name}}_Pos)
-#define {{"%-32s"|format("%s_%s_%s"|format(peripheral.name, register.name, field.name))}}{{peripheral.name}}_{{register.name}}_{{field.name}}_Msk
-{% if field.bitWidth > 1 %}
-{% set ns = namespace(count=1, index=0) %}
-{% set bitWidth = field.bitWidth.bit_length() %}
-{% for i in range(bitWidth) %}
-#define {{"%-32s"|format("%s_%s_%s_%d"|format(peripheral.name, register.name, field.name, ns.index))}}({{"0x%X"|format(ns.count)}} << {{peripheral.name}}_{{register.name}}_{{field.name}}_Pos)
-{% set ns.index = ns.index + 1 %}
-{% set ns.count = ns.count * 2 %}
-{% endfor %}
+{%- for register in peripheral.findall("./registers/register") %}
+{%- set text = "  Bit definition for %s register  "|format(register.find("name").text) %}
+/********************{{text}}{{"*" * (57 - text|length)}}*/
+{%- for field in register.findall("./fields/field") %}
+{%- set ptext = "%s_%s_%s"|format(peripheral.find("groupName").text, register.find("name").text, field.find("name").text) %}
+{%- set bit_width = field.find("bitWidth").text|int %}
+{%- set bit_mask = (2 ** bit_width) - 1 %}
+{%- set plength = ptext|length + 4 %}
+{%- if plength > 31 %}
+#define {{"%-42s"|format("%s_Pos"|format(ptext))}}({{field.find("bitOffset").text|int}})
+#define {{"%-42s"|format("%s_Msk"|format(ptext))}}({{"0x%XU"|format(bit_mask)}} << {{ptext}}_Pos)
+#define {{"%-42s"|format("%s"|format(ptext))}}{{ptext}}_Msk
+{%- else %}
+#define {{"%-32s"|format("%s_Pos"|format(ptext))}}({{field.find("bitOffset").text|int}})
+#define {{"%-32s"|format("%s_Msk"|format(ptext))}}({{"0x%XU"|format(bit_mask)}} << {{ptext}}_Pos)
+#define {{"%-32s"|format("%s"|format(ptext))}}{{ptext}}_Msk
+{%- endif %}
+{%- if bit_width > 1 and bit_width < 5 and "PSC" not in ptext and "AUTORLD" not in ptext and "CNT" not in ptext and "DATA" not in ptext and "DR" not in ptext and "SQR" not in ptext and "CC0" not in ptext and "CC1" not in ptext and "CC2" not in ptext and "CC3" not in ptext %}
+{%- set ns = namespace(count=1, index=0) %}
+{%- for i in range(bit_width) %}
+#define {{"%-32s"|format("%s_%d"|format(ptext, ns.index))}}({{"0x%X"|format(ns.count)}} << {{ptext}}_Pos)
+{%- set ns.index = ns.index + 1 %}
+{%- set ns.count = ns.count * 2 %}
+{%- endfor %}
 {% endif %}
-{% endfor %}
-{% endfor %}
+{%- endfor %}
+{%- endfor %}

@@ -1,9 +1,9 @@
-{% if cpu.name == 'CM0+' %}
+{%- if cpu.find('name').text == 'CM0+' %}
 #include "core_cm0plus.h"       /* Cortex-M0+ processor and core peripherals */
-{% elif cpu.name == 'CM3' %}
+{%- elif cpu.find('name').text == 'CM3' %}
 #include "core_cm3.h"       /* Cortex-M3 processor and core peripherals */
-{% elif cpu.name == 'CM4' %}
+{%- elif cpu.find('name').text == 'CM4' %}
 #include "core_cm4.h"       /* Cortex-M4 processor and core peripherals */
-{% endif %}
-#include "system_{{name_lower}}.h"    /* {{name_upper}}xx System Header */
+{%- endif %}
+#include "system_{{root.find('name').text|lower}}.h"    /* {{root.find('name').text|upper}}xx System Header */
 #include <stdint.h>

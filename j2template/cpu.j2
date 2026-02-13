@@ -1,20 +1,25 @@
 /**
- * @brief Configuration of the {{cpu.name_full_name}} Processor and Core Peripherals
+ * @brief Configuration of the {{cpu.find('name').text}} Processor and Core Peripherals
  */
-#define {{ "%-25s"|format(cpu.core_rev_define) }} 0 /*!< {{ "%-49s"|format("Core Revision %s"|format(cpu.revision)) }} */
-{% if cpu.mpuPresent %}
-#define {{ "%-25s"|format("__MPU_PRESENT") }} 1 /*!< {{ "%-49s"|format("%s provide MPU"|format(name_upper)) }} */
-{% else %}
-#define {{ "%-25s"|format("__MPU_PRESENT") }} 0 /*!< {{ "%-49s"|format("%s do not provide MPU"|format(name_upper)) }} */
-{% endif %}
-#define {{ "%-25s"|format("__NVIC_PRIO_BITS") }} {{cpu.nvicPrioBits}} /*!< {{ "%-49s"|format("%s uses %s Bits for the Priority Levels"|format(name_upper, cpu.nvicPrioBits)) }} */
-{% if cpu.vendorSysTickConfig %}
-#define {{ "%-25s"|format("__Vendor_SysTickConfig") }} 1 /*!< Set to 1 if different SysTick Config is used      */
-{% else %}
-#define {{ "%-25s"|format("__Vendor_SysTickConfig") }} 0 /*!< Set to 1 if different SysTick Config is used      */
-{% endif %}
-{% if cpu.vtorPresent %}
-#define {{ "%-25s"|format("__VTOR_PRESENT") }} 1 /*!< Set to 1 if different Vector Table Offset is used */
-{% else %}
-#define {{ "%-25s"|format("__VTOR_PRESENT") }} 0 /*!< Set to 1 if different Vector Table Offset is used */
-{% endif %}
+#define {{ "%-25s"|format("__%s_REV"|format(cpu.get('core')))}} 0 /*!< {{ "%-52s"|format("%s Core Revision"|format(cpu.get('core')))}} */
+#define {{ "%-25s"|format("__NVIC_PRIO_BITS") }} {{cpu.find('nvicPrioBits').text}} /*!< {{ "%-52s"|format("%s uses %s Bits for the Priority Levels"|format(root.find('name').text|upper, cpu.find('nvicPrioBits').text)) }} */
+{% if cpu.find('vendorSysTickConfig').text == 'true' -%}
+#define {{ "%-25s"|format("__Vendor_SysTickConfig") }} 1 /*!< {{ "%-52s"|format("Set to 1 if different SysTick Config is used") }} */
+{% else -%}
+#define {{ "%-25s"|format("__Vendor_SysTickConfig") }} 0 /*!< {{ "%-52s"|format("Set to 1 if different SysTick Config is used") }} */
+{% endif -%}
+{% if cpu.find('vtorPresent').text == 'true' -%}
+#define {{ "%-25s"|format("__VTOR_PRESENT") }} 1 /*!< {{ "%-52s"|format("Set to 1 if CPU supports Vector Table Offset Register") }} */
+{% else -%}
+#define {{ "%-25s"|format("__VTOR_PRESENT") }} 0 /*!< {{ "%-52s"|format("Set to 1 if CPU support Vector Table Offset Register") }} */
+{%- endif %}
+{% if cpu.find('mpuPresent').text == 'true' -%}
+#define {{ "%-25s"|format("__MPU_PRESENT") }} 1 /*!< {{ "%-52s"|format("%s provide MPU"|format(root.find('name').text|upper)) }} */
+{% else -%}
+#define {{ "%-25s"|format("__MPU_PRESENT") }} 0 /*!< {{ "%-52s"|format("%s do not provide MPU"|format(root.find('name').text|upper)) }} */
+{% endif -%}
+{% if cpu.find('fpuPresent').text == 'true' -%}
+#define {{ "%-25s"|format("__FPU_PRESENT") }} 1 /*!< {{ "%-52s"|format("%s provide FPU"|format(root.find('name').text|upper)) }} */
+{% else -%}
+#define {{ "%-25s"|format("__FPU_PRESENT") }} 0 /*!< {{ "%-52s"|format("%s do not provide FPU"|format(root.find('name').text|upper)) }} */
+{%- endif -%}

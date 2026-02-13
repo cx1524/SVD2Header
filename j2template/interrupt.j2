@@ -1,16 +1,15 @@
 typedef enum
 {
-{% if cpu.name == 'CM0' %}
+{%- if cpu.find('name').text == 'CM0' %}
 {% include 'cortex_m0.j2' %}
-{% elif cpu.name == 'CM0+' %}
+{%- elif cpu.find('name').text == 'CM0+' %}
 {% include 'cortex_m0.j2' %}
-{% elif cpu.name == 'CM3' %}
+{%- elif cpu.find('name').text == 'CM3' %}
 {% include 'cortex_m3.j2' %}
-{% elif cpu.name == 'CM4' %}
+{%- elif cpu.find('name').text == 'CM4' %}
 {% include 'cortex_m4.j2' %}
-{% endif %}
-/******  {{name_upper}}xx specific Interrupt Numbers ***************************************************************/
-{% for interrupt in interrupts %}
-  {{"%-28s"|format("%s_IRQn"|format(interrupt.name))}}=  {{"%-7s"|format("%d,"|format(interrupt.value))}}/*!< {{"%-63s"|format("%s %s"|format(interrupt.value, interrupt.desciption))}} */
-{% endfor %}
+{%- endif %}
+/******  {{root.find('name').text|upper}}xx specific Interrupt Numbers ***************************************************************/
+{%- for interrupt in interrupts %}
+  {{"%-28s"|format("%s_IRQn"|format(interrupt.find('name').text))}}=  {{"%-7s"|format("%s,"|format(interrupt.find('value').text))}}/*!< {{"%-63s"|format("%s %s"|format(interrupt.find('value').text, interrupt.find('description').text))}} */{% endfor %}
 } IRQn_Type;

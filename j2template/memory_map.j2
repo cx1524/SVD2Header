@@ -1,3 +1,3 @@
-{% for peripheral in peripherals %}
-#define {{"%-27s"|format("%s_BASE"|format(peripheral.name))}} {{"0x%08XUL"|format(peripheral.baseAddress)}}
-{% endfor %}
+{%- for peripheral in peripherals %}
+#define {{"%-27s"|format("%s_BASE"|format(peripheral.find("name").text))}} {{"0x%08XUL"|format(peripheral.find("baseAddress").text|int(base=16))}}
+{%- endfor %}

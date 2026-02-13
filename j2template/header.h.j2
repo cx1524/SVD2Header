@@ -3,12 +3,12 @@
   * @{
   */
 
-/** @addtogroup {{name_lower}}xx
+/** @addtogroup {{root.find('name').text|lower}}xx
   * @{
   */
 
-#ifndef __{{name_upper}}xx_H
-#define __{{name_upper}}xx_H
+#ifndef __{{root.find('name').text|upper}}xx_H
+#define __{{root.find('name').text|upper}}xx_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -27,19 +27,18 @@
   */
 
 /**
- * @brief {{name_upper}}xx Interrupt Number Definition, according to the selected device
+ * @brief {{root.find('name').text|upper}}xx Interrupt Number Definition, according to the selected device
  *        in @ref Library_configuration_section
  */
 
 /**
- * @brief {{name_upper}}xx Interrupt Number Definition, according to the selected device
+ * @brief {{root.find('name').text|upper}}xx Interrupt Number Definition, according to the selected device
  *        in @ref Library_configuration_section
  */
 {% include 'interrupt.j2' %}
 /**
   * @}
   */
-
 {% include 'include_file.j2' %}
 
 /** @addtogroup Peripheral_registers_structures
@@ -48,7 +47,6 @@
 {% for peripheral in peripherals %}
 {% include 'struct.j2' %}
 {% endfor %}
-
 /**
   * @}
   */
@@ -56,7 +54,6 @@
 /** @addtogroup Peripheral_memory_map
   * @{
   */
-
 {% include 'memory_map.j2' %}
 
 /**
@@ -66,7 +63,6 @@
 /** @addtogroup Peripheral_declaration
   * @{
   */
-
 {% include 'peripheral_declaration.j2' %}
 
 /**
@@ -88,10 +84,9 @@
 /******************************************************************************/
 /*                         Peripheral Registers_Bits_Definition               */
 /******************************************************************************/
-{% for peripheral in peripherals %}
+{% for peripheral in bits_peripherals %}
 {% include 'reg_bit.j2' %}
 {% endfor %}
-
 /**
   * @}
   */
@@ -103,15 +98,15 @@
 /** @addtogroup Exported_macro
   * @{
   */
-
+{% for instance in instances %}
 {% include 'instance_def.j2' %}
-
+{% endfor %}
 /******************************************************************************/
-/*  For a painless codes migration between the {{"%-29s"|format("%sxx device product"|name_upper)}} */
+/*  For a painless codes migration between the {{"%-30s"|format("%sxx device product"|format(root.find('name').text|upper))}} */
 /*  lines, the aliases defined below are put in place to overcome the         */
 /*  differences in the interrupt handlers and IRQn definitions.               */
 /*  No need to update developed interrupt code when moving across             */
-/*  product lines within the same {{"%-43s"|format("%sxx Family"|name_upper)}} */
+/*  product lines within the same {{"%-43s"|format("%sxx Family"|format(root.find('name').text|upper))}} */
 /******************************************************************************/
 
 /**
@@ -122,7 +117,7 @@
 }
 #endif /* __cplusplus */
 
-#endif /* __{{name_upper}}xx_H */
+#endif /* __{{root.find('name').text|upper}}xx_H */
 
 /**
   * @}
@@ -133,3 +128,4 @@
   */
 
 /************************ (C) COPYRIGHT Geehy Semiconductor *****END OF FILE****/
+

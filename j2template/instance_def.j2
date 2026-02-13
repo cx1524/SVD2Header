@@ -1,7 +1,13 @@
-/******************************* {{instances.groupName}} Instances ******************************/
-{% if instances.instances | length == 1 %}
-#define IS_{{instances.groupName}}_ALL_INSTANCE(INSTANCE) (((INSTANCE) == {{instances.instances[0].name}}))
-{% else %}
-#define IS_{{instances.groupName}}_ALL_INSTANCE(INSTANCE) ({% for instance in instances.instances %}{% if not loop.first %} || \
-                                        {% endif %}((INSTANCE) == {{instance.name}}){% endfor %})
-{% endif %}
+/******************************* {{instance.get("groupName")}} Instances ******************************/
+{%- if instance.findall("name") | length == 1 %}
+#define IS_{{instance.get("groupName")}}_ALL_INSTANCE(INSTANCE) (((INSTANCE) == {{instance.findall("name")[0].text}}))
+{%- else %}
+#define IS_{{instance.get("groupName")}}_ALL_INSTANCE(INSTANCE) ( \
+{%- for name in instance.findall("name") %}
+{%- if not loop.last %}
+                            ((INSTANCE) == {{name.text}}) || \
+{%- else %}
+                            ((INSTANCE) == {{name.text}}))
+{%- endif %}
+{%- endfor %}
+{%- endif %}
