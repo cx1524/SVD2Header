@@ -1,0 +1,41 @@
+# Commit Message Format
+# =====================
+#
+# 请遵循 Conventional Commits 规范：
+# <type>[optional scope]: <description>
+#
+# 示例：
+# feat(parser): 添加新的SVD解析功能
+# fix(templates): 修复内存映射模板错误
+# docs: 更新API使用文档
+#
+# 可用类型：
+#   feat     新功能
+#   fix      修复bug
+#   docs     文档更新
+#   style    代码格式调整
+#   refactor 重构代码
+#   test     测试相关
+#   chore    构建/工具链
+#   perf     性能优化
+#
+# 可用作用域：
+#   parser    SVD解析器相关
+#   templates J2模板文件
+#   build     构建/打包
+#   docs      文档
+#
+# 提交信息第一行（主题行）不超过50字符
+# 详细描述与主题行空一行，每行不超过72字符
+# 使用现在时态（"添加功能" 而非 "添加了功能"）
+# 使用祈使句（"移动文件" 而非 "移动了文件"）
+#
+# 示例完整提交信息：
+# feat(parser): 添加Cortex-M7处理器支持
+#
+# 新增Cortex-M7 SVD解析逻辑，支持以下特性：
+# - 扩展内存映射解析
+# - 新增中断向量表处理
+# - 更新对应的测试用例
+#
+# Closes #123
