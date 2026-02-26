@@ -6,7 +6,7 @@ from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
 import parser
 
-def svd2header(svd_file: str, template_file: str = "./j2template", output_file: str = ""):
+def svd2header(svd_file: str, template_file: str, output_file: str = ""):
     """将SVD文件转换为C头文件"""
     # 验证输入文件是否存在
     if not os.path.exists(svd_file):
@@ -54,8 +54,8 @@ def parse_arguments():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 使用示例:
-  python main.py -s G32M3101.svd -o ./output/g32m3101.h
-  python main.py --svd STM32F103.svd --template ./j2template --output ./output/stm32f103.h
+  python svd2header.exe -s *.svd -o ./output/*.h
+  python svd2header.exe --svd *.svd --template ./j2templates --output ./output/*.h
         """
     )
 
@@ -69,8 +69,8 @@ def parse_arguments():
     parser.add_argument(
         '-t', '--template',
         dest='template_file',
-        default='./j2template',
-        help='Jinja2模板目录路径 (默认: ./j2template)'
+        default='./j2templates',
+        help='Jinja2模板目录路径 (默认: ./j2templates)'
     )
 
     parser.add_argument(

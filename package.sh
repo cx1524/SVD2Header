@@ -10,7 +10,7 @@ fi
 pyinstaller --distpath ./release pyinstaller.spec
 
 # 复制j2template到release目录
-cp -r j2template ./release
+cp -r j2templates ./release
 
 # 将release目录内容打包成以svd2header为根目录的zip压缩包
 7z a -tzip svd2header.zip ./release/* -r

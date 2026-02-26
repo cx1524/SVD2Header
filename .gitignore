@@ -5,6 +5,31 @@ build/
 dist/
 wheels/
 *.egg-info
+# 日志文件
+*.log
+# 测试覆盖率
+htmlcov/
+.coverage
+.pytest_cache/
+# 类型检查
+.mypy_cache/
+.dmypy.json
+dmypy.json
+# Jupyter Notebook
+.ipynb_checkpoints
+# 环境变量
+.env
+.venv
+env/
+venv/
+ENV/
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+# macOS
+.DS_Store
 
 # Virtual environments
 .venv

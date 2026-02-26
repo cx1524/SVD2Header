@@ -3,7 +3,7 @@
 block_cipher = None
 
 a = Analysis(
-    ['main.py'],                      # 主入口脚本，按需修改
+    ['./src/svd2header/main.py'],                      # 主入口脚本，按需修改
     pathex=[],                        # 额外模块搜索路径
     binaries=[],                      # 需打包的外部二进制文件
     datas=[],                         # 需打包的额外资源（文件夹、配置文件等）
